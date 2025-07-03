@@ -168,10 +168,10 @@
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      position: relative; /* Necesario para la galería interna */
+      position: relative;
     }
     
-    /* --- INICIO ESTILOS GALERÍA INTERNA --- */
+    /* --- ESTILOS GALERÍA INTERNA --- */
     .image-gallery {
       width: 100%;
       height: 100%;
@@ -220,7 +220,6 @@
     .gallery-nav.next {
       right: 10px;
     }
-    /* --- FIN ESTILOS GALERÍA INTERNA --- */
     
     .carousel-content {
       flex: 1;
@@ -237,6 +236,7 @@
     .product-features {
       list-style: none;
       margin-bottom: 2rem;
+      text-align: left; /* Asegura que la lista esté alineada a la izquierda en móvil */
     }
     
     .product-features li {
@@ -479,20 +479,32 @@
       padding: 2rem 0;
     }
     
-    /* Responsive Design */
+    /* ================================================= */
+    /* ========= SECCIÓN RESPONSIVE CORREGIDA ========== */
+    /* ================================================= */
     @media (max-width: 768px) {
       .hero h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
       
+      /* --- SOLUCIÓN DEFINITIVA --- */
       .carousel-item {
-        flex-direction: column;
+        display: block; /* 1. Desactiva Flexbox para este elemento en móvil */
         text-align: center;
+        padding: 1.5rem 1rem; /* 2. Ajusta el padding para un mejor espaciado */
+      }
+
+      .carousel-image,
+      .carousel-content {
+        flex: none; /* 3. Se anula cualquier comportamiento flex residual */
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
       }
       
       .carousel-image {
-        max-width: 100%;
         height: 300px;
+        margin-bottom: 1.5rem; /* 4. Crea un espacio entre la imagen y el texto */
       }
       
       .product-title {
@@ -531,7 +543,7 @@
     <div class="container">
       <div class="hero-content">
         <div class="urgency-badge">
-          <i class="fas fa-fire"></i> OFERTA LIMITADA
+          <i class="fas fa-fire"></i> OFERTA LIMITADA SÓLO EN PUERTOLIBERTADOR
         </div>
         <h1>🛴 SCOOTER ELÉCTRICO & BICICLETA INFANTIL</h1>
         <p class="hero-subtitle">Artículos seminuevos a precios increíbles • Calidad garantizada</p>
@@ -555,7 +567,7 @@
 
   <section class="products">
     <div class="container">
-      <h2 class="section-title fade-in">Productos Disponibles</h2>
+      <h2 class="section-title fade-in">Productos Disponibles en Puertolibertador</h2>
       <div class="carousel-container fade-in">
         <div class="carousel" id="productsCarousel">
           
@@ -597,7 +609,7 @@
               <button class="gallery-nav next" onclick="moveGallery(this, 1)">&#10095;</button>
             </div>
             <div class="carousel-content">
-              <div class="discount-badge">-45% OFF</div>
+              <div class="discount-badge">-44% OFF</div>
               <h3 class="product-title">Bicicleta Infantil</h3>
               <ul class="product-features">
                 <li>Ideal para niños de 5-10 años</li>
@@ -636,7 +648,7 @@
   <section class="cta-section">
     <div class="container">
       <h2 class="cta-title">¿Listo para Comprar?</h2>
-      <p class="cta-subtitle">Contacta ahora por WhatsApp(Solo en puertolibertador) y asegura tu producto</p>
+      <p class="cta-subtitle">Contacta ahora por WhatsApp y asegura tu producto</p>
       <a href="https://bit.ly/4lam0p8" 
          class="whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i>
@@ -664,7 +676,7 @@
             </div>
             <div class="gift-content">
               <h4 class="gift-title">Balón de Fútbol #1</h4>
-              <p class="gift-description">Usado, en estado muy regular, pero entretiene</p>
+              <p class="gift-description">Usado pero en buen estado</p>
             </div>
           </div>
 
@@ -674,7 +686,7 @@
             </div>
             <div class="gift-content">
               <h4 class="gift-title">Balón de Fútbol #2</h4>
-              <p class="gift-description">Usado, en estado muy regular, pero entretiene</p>
+              <p class="gift-description">Perfecto para jugar</p>
             </div>
           </div>
 
@@ -684,7 +696,7 @@
             </div>
             <div class="gift-content">
               <h4 class="gift-title">Balón de Fútbol #3</h4>
-              <p class="gift-description">Usado, en estado muy regular, pero entretiene</p>
+              <p class="gift-description">Ideal para entrenar</p>
             </div>
           </div>
 
@@ -722,7 +734,7 @@
       
       <div style="text-align: center; margin-top: 3rem;">
         <a href="https://bit.ly/4lFEH4c" 
-           class="gift-btn" target="_blank">
+		class="gift-btn" target="_blank">
           <i class="fas fa-heart"></i>
           Solicitar Artículos Gratis
         </a>
@@ -802,9 +814,12 @@
     // Función para actualizar la posición del carrusel
     function updateCarousel(type) {
       const carousel = document.getElementById(`${type}Carousel`);
+      const giftsItemWidth = 300; // Ancho del item de regalo
+      const giftsGap = 32; // gap de 2rem = 32px
+
       const translateX = type === 'products' ? 
         -currentSlideIndex[type] * 100 : 
-        -currentSlideIndex[type] * 320; // 300px + 20px gap
+        -currentSlideIndex[type] * (giftsItemWidth + giftsGap);
       
       carousel.style.transform = `translateX(${translateX}${type === 'products' ? '%' : 'px'})`;
       
@@ -819,7 +834,11 @@
     // Auto-scroll para el carrusel de regalos
     function startAutoScroll() {
       setInterval(() => {
-        moveCarousel('gifts', 1);
+        // Solo mover si hay suficientes items para hacer scroll
+        const giftsCarousel = document.getElementById('giftsCarousel');
+        if(giftsCarousel.children.length > 2) { // O el número de items visibles
+           moveCarousel('gifts', 1);
+        }
       }, 4000);
     }
 
