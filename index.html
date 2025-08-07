@@ -212,7 +212,7 @@
             <h4 class="text-2xl font-bold text-white mb-2">¡Descuento por Promoción!</h4>
             <p class="opacity-70 mb-4">Aprovecha un <strong>50% de descuento</strong> en CUALQUIERA de los 5 primeros cursos. ¡Oferta por tiempo limitado!</p>
             <div id="countdown-timer">--:--:--:--</div>
-            <a href="https://wa.me/573123456789?text=Hola,%20quisiera%20solicitar%20mi%20descuento%20del%2050%25%20por%20promoción." target="_blank" class="cta-button text-white px-4 py-3 rounded-full font-semibold text-sm w-full block mt-auto">Solicitar Descuento</a>
+            <a href="https://bit.ly/3IVRVvB" target="_blank" class="cta-button text-white px-4 py-3 rounded-full font-semibold text-sm w-full block mt-auto">Solicitar Descuento</a>
           </div>
         </div>
         
@@ -427,7 +427,7 @@
     AOS.init({ duration: 700, once: true, offset: 50 });
 
     // Lógica del Modal de Pago
-    const paymentModal=document.getElementById("paymentModal"),modalContent=document.getElementById("modalContent"),closeModalBtn=document.getElementById("closeModal"),buyButtons=document.querySelectorAll(".buy-button"),modalCourseTitle=document.getElementById("modalCourseTitle"),whatsappPaymentLink=document.getElementById("whatsappPaymentLink"),whatsappNumber="573123456789",baseWhatsappUrl=`https://wa.me/${whatsappNumber}`,openModal=e=>{modalCourseTitle.innerText=`"${e}"`;const t=encodeURIComponent(`Hola, quisiera recibir los datos de pago (Nequi, Daviplata, Bancolombia) para el curso: "${e}"`);whatsappPaymentLink.href=`${baseWhatsappUrl}?text=${t}`,paymentModal.classList.remove("hidden"),setTimeout(()=>{modalContent.classList.add("scale-100")},10)},closeModal=()=>{modalContent.classList.remove("scale-100"),setTimeout(()=>{paymentModal.classList.add("hidden")},300)};buyButtons.forEach(e=>{e.addEventListener("click",t=>{t.preventDefault();const o=e.closest(".product-card").querySelector("h4").innerText;openModal(o)})}),closeModalBtn.addEventListener("click",closeModal),paymentModal.addEventListener("click",e=>{e.target===paymentModal&&closeModal()}),document.addEventListener("keydown",e=>{"Escape"===e.key&&!paymentModal.classList.contains("hidden")&&closeModal()});
+    const paymentModal=document.getElementById("paymentModal"),modalContent=document.getElementById("modalContent"),closeModalBtn=document.getElementById("closeModal"),buyButtons=document.querySelectorAll(".buy-button"),modalCourseTitle=document.getElementById("modalCourseTitle"),whatsappPaymentLink=document.getElementById("whatsappPaymentLink"),openModal=e=>{modalCourseTitle.innerText=`"${e}"`,whatsappPaymentLink.href="https://bit.ly/3IVRVvB",paymentModal.classList.remove("hidden"),setTimeout(()=>{modalContent.classList.add("scale-100")},10)},closeModal=()=>{modalContent.classList.remove("scale-100"),setTimeout(()=>{paymentModal.classList.add("hidden")},300)};buyButtons.forEach(e=>{e.addEventListener("click",t=>{t.preventDefault();const o=e.closest(".product-card").querySelector("h4").innerText;openModal(o)})}),closeModalBtn.addEventListener("click",closeModal),paymentModal.addEventListener("click",e=>{e.target===paymentModal&&closeModal()}),document.addEventListener("keydown",e=>{"Escape"===e.key&&!paymentModal.classList.contains("hidden")&&closeModal()});
 
     // --- Lógica para el Contador Regresivo ---
     const countdownElement = document.getElementById('countdown-timer');
