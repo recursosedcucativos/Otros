@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reproductor de Cursos • Sin distracciones</title>
+  <meta name="description" content="Reproductor de cursos basado en enlaces de YouTube, con interfaz profesional, sin anuncios ni distracciones." />
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --panel: #11141b;
+      --panel-2: #0e1117;
+      --ink: #e6e8ef;
+      --muted: #9aa3b2;
+      --brand: #6ee7ff;
+      --brand-2:#7c3aed;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger:#ef4444;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.40);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 70% -200px, rgba(124,58,237,.25), transparent 60%), var(--bg);
+      color:var(--ink); font: 15px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing:.2px; overflow:hidden;
+    }
+    .app{display:grid; grid-template-columns: 320px 1fr; gap:16px; height:100%; padding:16px}
+    .sidebar{
+      background:linear-gradient(180deg, rgba(110,231,255,.06), transparent 30%), var(--panel);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      display:flex; flex-direction:column; min-width:280px; overflow:hidden;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; padding:16px 16px 10px; border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .logo{width:34px; height:34px; background: conic-gradient(from 210deg, var(--brand), var(--brand-2)); border-radius:10px; filter: drop-shadow(0 6px 10px rgba(110,231,255,.15));}
+    .brand h1{font-size:16px; margin:0}
+    .brand small{display:block; color:var(--muted); font-weight:500}
+
+    .course-meta{padding:12px 16px; display:flex; gap:8px; flex-wrap:wrap}
+    .pill{background:#0b111a; border:1px solid rgba(255,255,255,.06); color:var(--muted); padding:6px 10px; border-radius:999px; font-size:12px}
+
+    .list{flex:1; overflow:auto; padding:8px;}
+    .item{
+      display:grid; grid-template-columns: 36px 1fr auto; gap:12px; align-items:center;
+      padding:10px; border-radius:12px; cursor:pointer; border:1px solid transparent;
+    }
+    .item:hover{ background:rgba(255,255,255,.03); border-color: rgba(255,255,255,.06); }
+    .item.active{ background: linear-gradient(90deg, rgba(124,58,237,.15), rgba(110,231,255,.10)); border-color:rgba(124,58,237,.30) }
+    .thumb{width:36px; height:36px; border-radius:10px; background:linear-gradient(180deg,#1b2332,#0b111a); display:grid; place-items:center; font-size:11px; color:var(--muted); border:1px solid rgba(255,255,255,.06)}
+    .title{font-weight:600}
+    .meta{font-size:12px; color:var(--muted)}
+
+    .main{
+      display:grid; grid-template-rows: auto 1fr auto; gap:12px; min-width: 640px;
+    }
+    .topbar{
+      display:flex; align-items:center; gap:10px; padding:8px 2px;
+    }
+    .topbar .btn{ padding:8px 12px; border:1px solid rgba(255,255,255,.08); border-radius:12px; background:var(--panel-2); color:var(--ink); cursor:pointer}
+    .topbar .btn:hover{ filter: brightness(1.1) }
+    .search{ margin-left:auto; background:var(--panel-2); border-radius:12px; padding:6px 10px; display:flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.06)}
+    .search input{ background:transparent; border:none; outline:none; color:var(--ink)}
+
+    .player-card{
+      position:relative; background:linear-gradient(180deg, rgba(124,58,237,.10), transparent 60%), var(--panel);
+      border-radius:var(--radius); box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden; min-height: 420px;
+    }
+    .player-aspect{ position:relative; width:100%; padding-top:56.25%; }
+    #yt-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+    /* Lienzo UI superpuesto */
+    .canvas-wrap{ position:absolute; inset:0; pointer-events:none; }
+    canvas#hud{ width:100%; height:100%; display:block; }
+
+    /* Controles propios */
+    .controls{ position:absolute; left:0; right:0; bottom:0; padding:12px; display:flex; align-items:center; gap:10px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.45)); }
+    .cbtn{ pointer-events:auto; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10); color:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; backdrop-filter: blur(6px); font-weight:600 }
+    .cbtn:hover{ background:rgba(255,255,255,.14) }
+    .time{ font-variant-numeric: tabular-nums; color:#e5e7eb; opacity:.9 }
+    .grow{ flex:1 }
+    .scrub{ position:relative; height:12px; border-radius:999px; background:rgba(255,255,255,.08); outline:1px solid rgba(255,255,255,.06); cursor:pointer; }
+    .scrub .buf{ position:absolute; left:0; top:0; bottom:0; width:0%; background:rgba(255,255,255,.15); border-radius:999px }
+    .scrub .prog{ position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, var(--brand-2), var(--brand)); border-radius:999px }
+
+    /* Estado bloqueado al finalizar (evita miniaturas y clicks a YouTube) */
+    .endscreen-shield{
+      position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px;
+      background: radial-gradient(800px 500px at 50% 10%, rgba(124,58,237,.35), transparent 60%), rgba(8,12,18,.95);
+      pointer-events:auto; z-index:5;
+      backdrop-filter: blur(6px);
+    }
+    .endscreen-shield.visible{ display:flex }
+    .endscreen-shield h3{ margin:0; font-size:22px; letter-spacing:.3px }
+    .row{ display:flex; gap:10px }
+    .ghost{ background:transparent; border:1px dashed rgba(255,255,255,.25) }
+
+    .notes{
+      display:grid; grid-template-columns: 1fr 1fr; gap:12px; opacity:.92;
+    }
+    .notes .card{ background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:12px }
+    .notes textarea{ width:100%; min-height:100px; background:#0b111a; border:1px solid rgba(255,255,255,.06); color:var(--ink); border-radius:12px; padding:10px }
+
+    .hidden{ display:none }
+    .tight{ letter-spacing:0 }
+
+    /* Modo enfoque: oculta barra lateral */
+    .focus .sidebar{ display:none }
+    .focus .app{ grid-template-columns: 1fr }
+
+    /* Responsivo */
+    @media (max-width: 980px){
+      .app{ grid-template-columns: 1fr; }
+      .sidebar{ display:none }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Academia <span class="tight">Pro</span></h1>
+          <small>Modo sin distracciones</small>
+        </div>
+      </div>
+      <div class="course-meta">
+        <span class="pill">Ruta: Frontend</span>
+        <span class="pill" id="count-pill">0 lecciones</span>
+        <span class="pill" id="progress-pill">Progreso 0%</span>
+      </div>
+      <div class="list" id="playlist" role="listbox" aria-label="Lista de lecciones"></div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="btn" id="toggleFocus" title="Alternar modo enfoque (Sidebar)">Enfoque</button>
+        <button class="btn" id="theater" title="Maximizar el reproductor">Teatro</button>
+        <button class="btn" id="speed" title="Velocidad de reproducción">1.0×</button>
+        <button class="btn" id="pip" title="Picture-in-Picture (experimental)">PiP</button>
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21L16.65 16.65M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#9aa3b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input id="search" placeholder="Buscar en el curso…" />
+        </div>
+      </div>
+
+      <section class="player-card" id="playerCard">
+        <div class="player-aspect">
+          <!-- IFrame YouTube -->
+          <div id="player"></div>
+
+          <!-- Canvas HUD para dibujar progreso/estética -->
+          <div class="canvas-wrap"><canvas id="hud"></canvas></div>
+
+          <!-- Controles propios accesibles -->
+          <div class="controls" id="controls" aria-label="Controles del reproductor">
+            <button class="cbtn" id="play">▶︎</button>
+            <div class="time" id="time">00:00 / 00:00</div>
+            <div class="grow"></div>
+            <div class="scrub" id="scrub" aria-label="Barra de progreso" title="Arrastra para navegar">
+              <div class="buf" id="buf"></div>
+              <div class="prog" id="prog"></div>
+            </div>
+            <div class="grow"></div>
+            <button class="cbtn" id="prev" title="Lección anterior">⟨⟨</button>
+            <button class="cbtn" id="next" title="Siguiente lección">⟩⟩</button>
+          </div>
+
+          <!-- Pantalla final propia (bloquea miniaturas nativas y clics al salir) -->
+          <div class="endscreen-shield" id="shield" aria-live="polite" aria-hidden="true">
+            <h3>¡Lección completada! 🎉</h3>
+            <div class="row">
+              <button class="cbtn" id="replay">Reproducir de nuevo</button>
+              <button class="cbtn" id="gotoNext">Siguiente lección</button>
+              <button class="cbtn ghost" id="closeShield">Cerrar</button>
+            </div>
+            <small class="muted">Nota: mantenemos bloqueado el iframe para evitar miniaturas y clics externos.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="notes">
+        <div class="card">
+          <strong>Notas rápidas</strong>
+          <textarea id="notes" placeholder="Escribe tu resumen de la lección… (se guarda automáticamente)"></textarea>
+        </div>
+        <div class="card">
+          <strong>Atajos útiles</strong>
+          <ul>
+            <li><kbd>Espacio</kbd> reproducir/pausar</li>
+            <li><kbd>←</kbd>/<kbd>→</kbd> retroceder/avanzar 5s</li>
+            <li><kbd>↑</kbd>/<kbd>↓</kbd> velocidad ±0.25×</li>
+            <li><kbd>F</kbd> modo Teatro</li>
+            <li><kbd>S</kbd> Enfoque (oculta barra lateral)</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- API IFrame de YouTube -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // ====== Datos del curso: coloca aquí tus enlaces de YouTube ======
+    const CURSO = [
+      { titulo: "1) Intro al proyecto & Setup", dur: "08:42", url: "https://www.youtube.com/watch?v=eTEBvBIz8Ok&pp=ygUUdGVvcmVtYSBkZSBwaXRhZ29yYXM%3D" },
+      { titulo: "2) Componentes UI y estados", dur: "12:15", url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ" },
+      { titulo: "3) Ruteo y navegación", dur: "10:57", url: "https://www.youtube.com/watch?v=jNQXAC9IVRw" },
+      { titulo: "4) Persistencia & LocalStorage", dur: "09:31", url: "https://www.youtube.com/watch?v=2lAe1cqCOXo" },
+    ];
+
+    // ====== Utilidades ======
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    function parseYouTubeId(input){
+      const r = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/;
+      const m = String(input).match(r);
+      return m ? m[1] : input; // si ya es ID, devuélvelo
+    }
+
+    function pad(n){ return String(Math.floor(n)).padStart(2,'0'); }
+    function fmtTime(sec){ if(!isFinite(sec)) return '00:00'; const m = Math.floor(sec/60); const s = Math.floor(sec%60); return `${pad(m)}:${pad(s)}`; }
+
+    function saveProgress(id, t, d){ localStorage.setItem(`yt:${id}:progress`, JSON.stringify({t, d, at: Date.now()})); }
+    function loadProgress(id){ try { return JSON.parse(localStorage.getItem(`yt:${id}:progress`)) || {t:0,d:0}; } catch { return {t:0,d:0}; } }
+
+    // ====== Render de la lista ======
+    const playlistEl = $('#playlist');
+    let currentIndex = 0; // se persiste más abajo
+
+    function buildList(){
+      playlistEl.innerHTML = '';
+      CURSO.forEach((it, i)=>{
+        const id = parseYouTubeId(it.url);
+        const li = document.createElement('div');
+        li.className = 'item'; li.role = 'option'; li.tabIndex = 0;
+        li.innerHTML = `
+          <div class="thumb">${i+1}</div>
+          <div>
+            <div class="title">${it.titulo}</div>
+            <div class="meta">${it.dur} • <span id="p-${id}">0%</span></div>
+          </div>
+          <div class="meta">▶︎</div>
+        `;
+        li.addEventListener('click', ()=> loadByIndex(i));
+        li.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadByIndex(i); }});
+        playlistEl.appendChild(li);
+      });
+      $('#count-pill').textContent = `${CURSO.length} lecciones`;
+      updateProgressPills();
+    }
+
+    function updateActiveItem(){
+      $$('.item').forEach((el, i)=> el.classList.toggle('active', i===currentIndex));
+    }
+
+    function updateProgressPills(){
+      let done = 0;
+      CURSO.forEach(it=>{
+        const id = parseYouTubeId(it.url);
+        const {t,d} = loadProgress(id);
+        const p = d? Math.min(100, Math.round((t/d)*100)) : 0;
+        const badge = document.getElementById(`p-${id}`); if(badge) badge.textContent = `${p}%`;
+        if(p>=95) done++;
+      });
+      const pct = Math.round((done / CURSO.length)*100);
+      $('#progress-pill').textContent = `Progreso ${pct}%`;
+    }
+
+    // ====== YouTube Player API ======
+    let player; let currentId = null; let ready = false; let ended = false;
+    window.onYouTubeIframeAPIReady = function(){
+      player = new YT.Player('player', {
+        width:'100%', height:'100%', videoId: parseYouTubeId(CURSO[0].url),
+        playerVars:{
+          autoplay:0, controls:0, disablekb:1, fs:0, rel:0, modestbranding:1, iv_load_policy:3, playsinline:1, origin: location.origin
+        },
+        events: {
+          onReady(){ ready = true; initHUD(); restoreLast(); },
+          onStateChange: onStateChange
+        }
+      });
+    }
+
+    function onStateChange(e){
+      const s = e.data;
+      const iframe = document.querySelector('#player iframe');
+      const shield = $('#shield');
+      if(s === YT.PlayerState.PLAYING){ ended = false; shield.classList.remove('visible'); iframe && (iframe.style.pointerEvents = 'auto'); $('#play').textContent = '⏸'; }
+      if(s === YT.PlayerState.PAUSED){ $('#play').textContent = '▶︎'; }
+      if(s === YT.PlayerState.ENDED){ ended = true; showShield(); saveProgress(currentId, player.getDuration(), player.getDuration()); updateProgressPills(); }
+    }
+
+    function showShield(){
+      const iframe = document.querySelector('#player iframe');
+      if(iframe) iframe.style.pointerEvents = 'none'; // bloquea cualquier click hacia YouTube
+      const sh = $('#shield'); sh.classList.add('visible'); sh.setAttribute('aria-hidden','false');
+    }
+
+    // ====== Cargar lección ======
+    function loadByIndex(i){
+      if(!ready) return;
+      currentIndex = Math.max(0, Math.min(CURSO.length-1, i));
+      const id = parseYouTubeId(CURSO[currentIndex].url);
+      currentId = id;
+      updateActiveItem();
+      player.loadVideoById({videoId:id, startSeconds: restoreProgressFor(id)});
+      hideShield();
+      persistIndex();
+    }
+
+    function hideShield(){ const sh = $('#shield'); sh.classList.remove('visible'); sh.setAttribute('aria-hidden','true'); }
+
+    function restoreLast(){
+      const last = parseInt(localStorage.getItem('yt:lastIndex')||'0',10); if(!isNaN(last)) currentIndex = Math.min(last, CURSO.length-1);
+      const id = parseYouTubeId(CURSO[currentIndex].url); currentId = id; updateActiveItem();
+      player.cueVideoById(id);
+      setTimeout(()=>{ const t = restoreProgressFor(id); if(t>0) player.seekTo(t,true); }, 500);
+    }
+
+    function restoreProgressFor(id){ const {t,d} = loadProgress(id); const pct = d? t/d : 0; return pct>0.02 && pct<0.95 ? t : 0; }
+    function persistIndex(){ localStorage.setItem('yt:lastIndex', String(currentIndex)); }
+
+    // ====== HUD Canvas (progreso animado + aura) ======
+    let hud, hctx; let rafId; let lastW=0,lastH=0; let t0=performance.now();
+    function initHUD(){
+      hud = document.getElementById('hud'); hctx = hud.getContext('2d');
+      const resize = ()=>{ const r = hud.getBoundingClientRect(); if(r.width!==lastW||r.height!==lastH){ lastW=r.width; lastH=r.height; hud.width = r.width*2; hud.height = r.height*2; } };
+      new ResizeObserver(resize).observe(hud.parentElement); resize();
+      loop();
+    }
+    function loop(){
+      rafId = requestAnimationFrame(loop);
+      if(!hctx || !player) return;
+      const W=hud.width, H=hud.height; hctx.clearRect(0,0,W,H);
+      // Aura sutil
+      const t = (performance.now()-t0)/1000;
+      const cx=W*0.5, cy=H*0.87; const r=Math.min(W,H)*0.35; const grd=hctx.createRadialGradient(cx,cy, r*0.1, cx,cy, r*1.1);
+      grd.addColorStop(0, `rgba(124,58,237,${0.10+0.05*Math.sin(t*1.5)})`);
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      hctx.fillStyle=grd; hctx.beginPath(); hctx.arc(cx,cy,r*1.2,0,Math.PI*2); hctx.fill();
+
+      // Barra de progreso (doble buffer)
+      try{
+        const dur = player.getDuration()||0; const cur = player.getCurrentTime()||0; const buf = player.getVideoLoadedFraction()||0;
+        const pct = dur? cur/dur : 0; const bw = W*0.72; const x = (W-bw)/2; const y = H*0.92; const h = 18;
+        // fondo
+        roundRect(hctx, x, y, bw, h, 12); hctx.fillStyle = 'rgba(255,255,255,0.10)'; hctx.fill();
+        // buffer
+        roundRect(hctx, x, y, bw*buf, h, 12); hctx.fillStyle = 'rgba(255,255,255,0.22)'; hctx.fill();
+        // progreso
+        const grd2=hctx.createLinearGradient(x,0,x+bw,0); grd2.addColorStop(0,'#7c3aed'); grd2.addColorStop(1,'#6ee7ff');
+        roundRect(hctx, x, y, bw*pct, h, 12); hctx.fillStyle = grd2; hctx.fill();
+      }catch(_){}
+    }
+    function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); }
+
+    // ====== Controles ======
+    const btnPlay = $('#play'); const btnPrev = $('#prev'); const btnNext = $('#next');
+    const lblTime = $('#time'); const bar = $('#scrub'); const prog = $('#prog'); const buf = $('#buf');
+
+    btnPlay.addEventListener('click', ()=>{ togglePlay(); });
+    btnPrev.addEventListener('click', ()=> loadByIndex(currentIndex-1));
+    btnNext.addEventListener('click', ()=> loadByIndex(currentIndex+1));
+
+    function togglePlay(){ if(!player) return; const s = player.getPlayerState(); if(s===YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo(); }
+
+    // Barra de progreso interactiva
+    let scrubbing=false;
+    function posToTime(ev){ const rect = bar.getBoundingClientRect(); const x = Math.min(Math.max(0, (ev.clientX-rect.left)), rect.width); const f = x/rect.width; const dur = player.getDuration()||0; return f*dur; }
+    bar.addEventListener('pointerdown', e=>{ scrubbing=true; bar.setPointerCapture(e.pointerId); player.pauseVideo(); player.seekTo(posToTime(e), true); });
+    bar.addEventListener('pointermove', e=>{ if(scrubbing) player.seekTo(posToTime(e), true); });
+    bar.addEventListener('pointerup', e=>{ if(scrubbing){ scrubbing=false; player.playVideo(); } });
+
+    // Velocidad
+    const btnSpeed = $('#speed'); let speed = parseFloat(localStorage.getItem('yt:speed')||'1.0');
+    function applySpeed(){ try{ player.setPlaybackRate(speed); }catch{} btnSpeed.textContent = `${speed.toFixed(2)}×`; localStorage.setItem('yt:speed', String(speed)); }
+    btnSpeed.addEventListener('click', ()=>{ const steps=[0.75,1.0,1.25,1.5,1.75,2.0]; const i=(steps.indexOf(speed)+1)%steps.length; speed=steps[i]; applySpeed(); });
+
+    // Teatro / Enfoque
+    $('#theater').addEventListener('click', ()=> theater());
+    function theater(){ const card = $('#playerCard'); const full = card.style.height==='80vh'; card.style.height = full? '' : '80vh'; }
+    $('#toggleFocus').addEventListener('click', ()=> document.body.classList.toggle('focus'));
+
+    // PiP (experimental via Document Picture-in-Picture con iframe)
+    $('#pip').addEventListener('click', async ()=>{
+      try{
+        if(document.pictureInPictureElement){ document.exitPictureInPicture(); return; }
+        // No podemos pasar el video de YouTube al PiP nativo, pero sí usamos Document PiP para clonar el contenedor
+        if('documentPictureInPicture' in window){
+          const pipWin = await window.documentPictureInPicture.requestWindow({ width: 640, height: 360 });
+          const clone = $('#playerCard').cloneNode(true);
+          clone.style.height='100%'; clone.querySelector('#shield')?.remove();
+          pipWin.document.body.style.margin='0'; pipWin.document.body.style.background='#000';
+          pipWin.document.body.appendChild(clone);
+        } else { alert('PiP no soportado en este navegador.'); }
+      }catch(err){ console.warn(err); }
+    });
+
+    // Buscar en la lista
+    $('#search').addEventListener('input', e=>{
+      const q = e.target.value.toLowerCase();
+      $$('.item').forEach((el,i)=>{
+        const title = CURSO[i].titulo.toLowerCase();
+        el.style.display = title.includes(q) ? 'grid' : 'none';
+      });
+    });
+
+    // Escudo de fin de video
+    $('#replay').addEventListener('click', ()=>{ hideShield(); player.seekTo(0,true); player.playVideo(); });
+    $('#gotoNext').addEventListener('click', ()=>{ hideShield(); loadByIndex(currentIndex+1); });
+    $('#closeShield').addEventListener('click', ()=> hideShield());
+
+    // Teclas rápidas
+    window.addEventListener('keydown', e=>{
+      const tag = (e.target && (e.target.tagName||'')).toLowerCase(); if(tag==='input' || tag==='textarea') return;
+      if(e.code==='Space'){ e.preventDefault(); togglePlay(); }
+      if(e.key==='ArrowRight'){ player.seekTo(player.getCurrentTime()+5, true); }
+      if(e.key==='ArrowLeft'){ player.seekTo(Math.max(0, player.getCurrentTime()-5), true); }
+      if(e.key==='ArrowUp'){ speed = Math.min(2, (speed+0.25)); applySpeed(); }
+      if(e.key==='ArrowDown'){ speed = Math.max(.5, (speed-0.25)); applySpeed(); }
+      if(e.key.toLowerCase()==='f'){ theater(); }
+      if(e.key.toLowerCase()==='s'){ document.body.classList.toggle('focus'); }
+    });
+
+    // Sincronización de UI periódica
+    setInterval(()=>{
+      if(!player || !currentId) return;
+      const d = player.getDuration()||0; const c = player.getCurrentTime()||0; const b = player.getVideoLoadedFraction()||0;
+      lblTime.textContent = `${fmtTime(c)} / ${fmtTime(d)}`;
+      const pct = d? (c/d)*100 : 0; prog.style.width = pct + '%'; buf.style.width = (b*100) + '%';
+      saveProgress(currentId, c, d); updateProgressPills();
+    }, 500);
+
+    // Notas por lección
+    const notes = $('#notes');
+    function notesKey(){ return `yt:${currentId||'0'}:notes`; }
+    notes.addEventListener('input', ()=> localStorage.setItem(notesKey(), notes.value));
+
+    // Al cambiar de video, cargar notas guardadas
+    const obs = new MutationObserver(()=>{ if(!currentId) return; notes.value = localStorage.getItem(notesKey())||''; });
+    obs.observe($('#player'), { childList: true, subtree: true });
+
+    // Pulsos de seguridad: re-bloqueo del iframe si el estado terminó
+    setInterval(()=>{ try{
+      if(ended){ const iframe = document.querySelector('#player iframe'); if(iframe) iframe.style.pointerEvents = 'none'; }
+    }catch(_){} }, 1000);
+
+    // Construcción inicial
+    buildList();
+
+    // ====== Seguridad / UX extra ======
+    // Evita que el usuario abra el menú contextual sobre el reproductor
+    document.getElementById('playerCard').addEventListener('contextmenu', e=> e.preventDefault());
+
+    // Asegura que no se "transparente" que es YouTube: sin título, sin controles, sin aros
+    // (cumplimos lo permitido por la API oficial).
+
+    // ====== DISCLAIMER ======
+    // Este reproductor usa la API IFrame de YouTube respetando sus parámetros (modestbranding, rel=0, controls=0).
+    // No es posible remover completamente la marca de YouTube ni dibujar el video en canvas por políticas de CORS.
+    // Para impedir miniaturas y clics de salida al finalizar, aplicamos un escudo opaco (pointer-events: auto) sobre el iframe.
+  </script>
+</body>
+</html>
