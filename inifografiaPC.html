@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Pedagogía Crítica en Acción</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-box {
+            border: 2px solid #00A0B0;
+            background-color: #ffffff;
+            color: #6A4A3C;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            color: #EB6841;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .principle-card {
+            background-color: #f8fafc;
+            border-left: 5px solid #EB6841;
+            padding: 1rem;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#CC333F] mb-2">Pedagogía Crítica en Acción</h1>
+            <p class="text-lg md:text-xl text-[#6A4A3C]">Una actitud y una praxis para la emancipación y la transformación social.</p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-6">¿Qué es la Pedagogía Crítica?</h2>
+                <p class="text-center text-[#6A4A3C] max-w-3xl mx-auto">No es solo una teoría, es una postura ética y política. Reivindica al sujeto y fomenta formas de resistir y liberarse ante un sistema que busca homogenizar. Su objetivo es claro: la construcción de una sociedad más justa a través de una educación liberadora.</p>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-8">Fundamentos Teóricos: Las Raíces del Pensamiento Crítico</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-gray-100 p-4 rounded-lg shadow">
+                            <h3 class="font-bold text-[#00A0B0]">Escuela de Frankfurt</h3>
+                            <p class="text-sm text-gray-600">Crítica a la razón instrumental y a los mecanismos de dominación.</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg shadow">
+                            <h3 class="font-bold text-[#00A0B0]">Paulo Freire</h3>
+                            <p class="text-sm text-gray-600">Educación como práctica de la libertad y la "conscientización".</p>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg shadow">
+                            <h3 class="font-bold text-[#00A0B0]">Teología de la Liberación</h3>
+                            <p class="text-sm text-gray-600">Praxis liberadora y un interés emancipatorio desde la fe y la comunidad.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="flex justify-center my-4"><span class="text-4xl text-[#EB6841]">&#8595;</span></div>
+                 <div class="bg-[#CC333F] text-white font-bold p-4 rounded-lg shadow-lg text-center text-xl max-w-md mx-auto">Pedagogía Crítica</div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-8">Principios Fundamentales</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="principle-card">
+                        <h3 class="font-bold text-lg text-[#CC333F]">1. La Educación no es Neutral</h3>
+                        <p class="text-[#6A4A3C]">Todo acto educativo es político. O reproduce el orden social existente o lo transforma.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h3 class="font-bold text-lg text-[#CC333F]">2. Pensamiento Crítico como Objetivo</h3>
+                        <p class="text-[#6A4A3C]">Busca desarrollar la capacidad de analizar y cuestionar las desigualdades y la injusticia.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h3 class="font-bold text-lg text-[#CC333F]">3. Democracia Auténtica</h3>
+                        <p class="text-[#6A4A3C]">Fomenta la participación real y el pensamiento libre, más allá de la democracia electoralista.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h3 class="font-bold text-lg text-[#CC333F]">4. Justicia Social e Inclusión</h3>
+                        <p class="text-[#6A4A3C]">Lucha activamente contra la exclusión y promueve el acceso a una educación de calidad para todos.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h3 class="font-bold text-lg text-[#CC333F]">5. Contextualización</h3>
+                        <p class="text-[#6A4A3C]">La educación debe estar situada en las realidades históricas y culturales concretas de los estudiantes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-6">Dimensiones Pedagógicas Clave</h2>
+                 <p class="text-center text-[#6A4A3C] max-w-3xl mx-auto mb-10">La pedagogía crítica se materializa a través de conceptos interconectados que rompen con el modelo tradicional y fomentan un aprendizaje liberador.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-[#CC333F] mb-4">Praxis Pedagógica</h3>
+                        <div class="chart-container">
+                            <canvas id="praxisChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-[#6A4A3C] px-2">Unión dialéctica de <span class="font-bold">Acción</span> y <span class="font-bold">Reflexión</span>. El conocimiento se genera y se valida en la práctica orientada a la transformación social.</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-[#CC333F] mb-4">Diálogo Horizontal</h3>
+                        <div class="chart-container">
+                            <canvas id="saberesChart"></canvas>
+                        </div>
+                         <p class="mt-4 text-[#6A4A3C] px-2">Relación democrática que valora y entrelaza saberes <span class="font-bold">Académicos</span>, <span class="font-bold">Populares</span> y <span class="font-bold">Vivenciales</span> en una construcción colectiva.</p>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold text-[#CC333F] mb-4">Alfabetización Crítica</h3>
+                        <div class="chart-container">
+                            <canvas id="alfabetizacionChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-[#6A4A3C] px-2">Ir más allá de la palabra. Es "leer el mundo", <span class="font-bold">Decodificar Discursos</span> y comprender las <span class="font-bold">Estructuras de Poder</span> que subyacen en ellos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-8">Los Actores del Cambio</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="border-2 border-[#00A0B0] p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-[#00A0B0] mb-4 text-center">Rol del Docente</h3>
+                        <ul class="list-disc list-inside space-y-2 text-[#6A4A3C]">
+                            <li><span class="font-bold">Intelectual Transformador:</span> No un mero técnico o transmisor.</li>
+                            <li><span class="font-bold">Mediador Pedagógico:</span> Facilita el diálogo y la construcción colectiva.</li>
+                            <li><span class="font-bold">Agente de Cambio:</span> Consciente de su papel político y ético.</li>
+                            <li><span class="font-bold">Investigador de su Práctica:</span> Reflexiona y mejora continuamente.</li>
+                        </ul>
+                    </div>
+                    <div class="border-2 border-[#EB6841] p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-[#EB6841] mb-4 text-center">Rol del Estudiante</h3>
+                         <ul class="list-disc list-inside space-y-2 text-[#6A4A3C]">
+                            <li><span class="font-bold">Sujeto Activo:</span> Protagonista de su aprendizaje, no un receptor pasivo.</li>
+                            <li><span class="font-bold">Pensador Crítico:</span> Cuestiona la realidad de forma permanente.</li>
+                            <li><span class="font-bold">Constructor de Conocimiento:</span> Aporta sus saberes y experiencias.</li>
+                             <li><span class="font-bold">Ciudadano Participativo:</span> Comprometido con su comunidad.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#00A0B0] text-center mb-2">El Resultado: De Sujeto Pasivo a Sujeto Histórico</h2>
+                <p class="text-center text-[#6A4A3C] max-w-3xl mx-auto mb-8">La pedagogía crítica busca formar individuos capaces de leer su mundo y escribir su propia historia, no solo repetir la de otros.</p>
+                <div class="chart-container mx-auto" style="max-width: 800px; height: 400px;">
+                    <canvas id="sujetoChart"></canvas>
+                </div>
+            </section>
+
+            <footer class="text-center py-10 border-t-2 border-gray-200">
+                 <h2 class="text-3xl md:text-4xl font-black text-[#6A4A3C] mb-4">"La educación no cambia el mundo,</h2>
+                 <p class="text-4xl md:text-5xl font-black text-[#CC333F]">cambia a las personas que van a cambiar el mundo."</p>
+                 <p class="text-lg text-gray-500 mt-2">- Paulo Freire</p>
+                 <p class="text-sm text-gray-400 mt-8">Análisis y síntesis basados en "Elementos teóricos y prácticos de la pedagogía crítica" de Gómez, J. R. y Gómez, L. (2011) y otros autores del pensamiento crítico latinoamericano.</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        function wrapText(text) {
+            const maxLength = 16;
+            if (typeof text !== 'string' || text.length <= maxLength) {
+                return text;
+            }
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        };
+
+        const chartColors = ['#00A0B0', '#EB6841', '#EDC951', '#CC333F', '#6A4A3C'];
+
+        new Chart(document.getElementById('praxisChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Acción', 'Reflexión'],
+                datasets: [{
+                    data: [50, 50],
+                    backgroundColor: [chartColors[0], chartColors[1]],
+                    borderColor: '#ffffff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+        
+        new Chart(document.getElementById('saberesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Académico', 'Popular', 'Vivencial'],
+                datasets: [{
+                    data: [33, 34, 33],
+                    backgroundColor: [chartColors[0], chartColors[1], chartColors[2]],
+                     borderColor: '#ffffff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        
+        new Chart(document.getElementById('alfabetizacionChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Decodificar Discursos', 'Analizar Poder'],
+                datasets: [{
+                    data: [60, 40],
+                    backgroundColor: [chartColors[0], chartColors[1]],
+                     borderColor: '#ffffff',
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        new Chart(document.getElementById('sujetoChart'), {
+            type: 'bar',
+            data: {
+                labels: [wrapText('Agente de Cambio Social'), wrapText('Autonomía y Pensamiento Libre'), wrapText('Análisis Crítico del Contexto'), wrapText('Participación Comunitaria')],
+                datasets: [
+                    {
+                        label: 'Sujeto Pasivo',
+                        data: [10, 20, 15, 5],
+                        backgroundColor: '#C5C5C5',
+                        borderColor: '#AFAFAF',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Sujeto Histórico',
+                        data: [90, 85, 95, 100],
+                        backgroundColor: chartColors[3],
+                        borderColor: chartColors[2],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                ...tooltipTitleCallback,
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {return value + "%"}
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
