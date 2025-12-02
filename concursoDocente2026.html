@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta 360° | Kit Definitivo Concurso Docente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- 1. VARIABLES Y BASE --- */
+        :root {
+            --primary: #0F172A;     /* Azul Profundo (Autoridad) */
+            --secondary: #3B82F6;   /* Azul Vibrante (Tecnología/Educación) */
+            --accent: #F59E0B;      /* Dorado (Éxito/Dinero) */
+            --accent-hover: #D97706;
+            --urgency: #ef4444;     /* Rojo (Oferta/Atención) */
+            --text-dark: #1E293B;
+            --text-light: #F8FAFC;
+            --bg-light: #F1F5F9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { line-height: 1.6; color: var(--text-dark); background-color: #fff; overflow-x: hidden; }
+
+        /* --- 2. UTILIDADES --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .text-center { text-align: center; }
+        
+        .btn {
+            display: inline-block;
+            border-radius: 50px;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        /* --- 3. HEADER --- */
+        header {
+            background: rgba(255,255,255,0.98);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; font-weight: 900; color: var(--primary); letter-spacing: -1px; }
+        .logo span { color: var(--secondary); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            padding: 150px 0 100px;
+            background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+            color: var(--text-light);
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 750px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.15);
+            color: var(--accent);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+        }
+
+        /* --- 5. AUDIO PREVIEW (HOOK) --- */
+        .audio-wrapper {
+            position: relative;
+            margin-top: -50px;
+            z-index: 10;
+            padding: 0 20px;
+        }
+        
+        .audio-preview {
+            background: #fff;
+            color: var(--text-dark);
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .play-btn {
+            width: 55px;
+            height: 55px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .play-btn:hover { transform: scale(1.1); }
+        .play-btn:active { transform: scale(0.95); }
+
+        .audio-content h5 { font-size: 1rem; margin-bottom: 2px; }
+        .audio-content p { font-size: 0.85rem; color: #64748B; margin: 0; }
+        
+        .audio-wave { 
+            flex: 1; 
+            height: 30px; 
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 30" fill="%233B82F6"><rect x="10" y="5" width="4" height="20" rx="2"/><rect x="20" y="2" width="4" height="26" rx="2"/><rect x="30" y="8" width="4" height="14" rx="2"/><rect x="40" y="5" width="4" height="20" rx="2"/><rect x="50" y="10" width="4" height="10" rx="2"/><rect x="60" y="2" width="4" height="26" rx="2"/><rect x="70" y="12" width="4" height="6" rx="2"/><rect x="80" y="5" width="4" height="20" rx="2"/><rect x="90" y="2" width="4" height="26" rx="2"/><rect x="100" y="8" width="4" height="14" rx="2"/></svg>') repeat-x; 
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        /* --- 6. FEATURES GRID --- */
+        .features { padding: 80px 0; background: var(--bg-light); margin-top: 60px; }
+        .section-title { font-size: 2.5rem; margin-bottom: 50px; color: var(--primary); font-weight: 800; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: #fff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            transition: transform 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .card:hover { 
+            transform: translateY(-8px); 
+            border-bottom: 4px solid var(--secondary);
+        }
+        
+        .card i { font-size: 2.5rem; color: var(--secondary); margin-bottom: 20px; }
+        .card h3 { margin-bottom: 12px; font-size: 1.25rem; font-weight: 700; }
+        .card p { font-size: 0.95rem; color: #475569; line-height: 1.5; }
+
+        /* --- 7. ECOSYSTEM SECTION --- */
+        .ecosystem { padding: 80px 0; }
+        .eco-flex { display: flex; flex-wrap: wrap; align-items: center; gap: 50px; }
+        .eco-text { flex: 1; min-width: 300px; }
+        .eco-image { flex: 1; min-width: 300px; }
+        
+        .eco-item { display: flex; align-items: flex-start; margin-bottom: 30px; }
+        .eco-icon {
+            width: 50px; height: 50px;
+            background: #EFF6FF; color: var(--secondary);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-right: 20px; flex-shrink: 0;
+        }
+
+        /* --- 8. CTA & PRICING (LA SECCIÓN CLAVE) --- */
+        .cta-section {
+            background: var(--primary);
+            color: white;
+            padding: 90px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de fondo sutil */
+        .cta-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+        
+        /* NUEVO: ESTILOS PARA EL BONO DE REGALO */
+        .bonus-card {
+            background: #fffbeb; /* Fondo claro amarillento */
+            color: #92400e;      /* Texto oscuro dorado/café */
+            border: 2px dashed #f59e0b; /* Borde punteado de cupón */
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            position: relative;
+            text-align: left;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .bonus-card h4 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .bonus-card ul { margin-left: 25px; margin-bottom: 0; }
+        .bonus-card li { margin-bottom: 8px; font-weight: 600; }
+        .bonus-tag {
+            background: #ef4444; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; position: absolute; top: -12px; right: 20px; transform: rotate(2deg);
+        }
+
+        .price-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            display: inline-block;
+            margin: 10px 0 40px; /* Ajustado margen */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            min-width: 320px;
+        }
+
+        .discount-badge {
+            background-color: var(--urgency);
+            color: white;
+            font-weight: 800;
+            padding: 10px 25px;
+            border-radius: 50px;
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+            transform: rotate(10deg);
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+            z-index: 5;
+            text-transform: uppercase;
+        }
+
+        .old-price {
+            font-size: 1.4rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .new-price {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+            display: block;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .currency { font-size: 2rem; vertical-align: super; font-weight: 700; }
+        .cop-label { font-size: 1rem; color: #fff; font-weight: 400; opacity: 0.8; }
+
+        .trust-badges {
+            margin-top: 35px;
+            display: flex; justify-content: center; gap: 25px; flex-wrap: wrap;
+            font-size: 0.95rem; opacity: 0.9;
+        }
+
+        /* --- 9. FOOTER --- */
+        footer { background: #020617; color: #64748B; padding: 40px 0; text-align: center; font-size: 0.9rem; border-top: 1px solid #1E293B; }
+
+        /* --- ANIMACIONES --- */
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(10deg); }
+            50% { transform: scale(1.1) rotate(10deg); }
+            100% { transform: scale(1) rotate(10deg); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1.1rem; }
+            .new-price { font-size: 3.5rem; }
+            .audio-preview { flex-direction: column; text-align: center; }
+            .audio-wave { width: 100%; margin-top: 10px; }
+            .eco-flex { flex-direction: column; }
+            .play-btn { margin-bottom: 10px; }
+            .bonus-card { margin-left: 20px; margin-right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Ruta<span>360°</span></div>
+                <a href="#oferta" class="btn btn-primary" style="padding: 10px 25px; font-size: 0.9rem; background: var(--primary);">
+                    Acceder
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">🚀 Nuevo Material 2024-2025</div>
+            <h1>Asegura tu Plaza Docente <br> <span style="color:var(--accent)">Sin Memorizar Leyes</span></h1>
+            <p>El único Kit de Estudio en <strong>Audio y Formato Visual</strong>. Entiende la normativa, domina los casos de aula y prepárate mientras vas al trabajo.</p>
+            <a href="#oferta" class="btn btn-primary">Quiero mi Nombramiento</a>
+        </div>
+    </section>
+
+    <div class="audio-wrapper">
+        <div class="audio-preview">
+            <div class="play-btn" onclick="togglePlay()"><i class="fas fa-play" id="playIcon"></i></div>
+            <div class="audio-content">
+                <h5>🎧 Escucha una muestra real:</h5>
+                <p>Cómo responder casos de convivencia (Decreto 1278)</p>
+            </div>
+            <div class="audio-wave"></div>
+        </div>
+    </div>
+
+    <section class="features">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title">Lo que Dominarás (Sin Estrés)</h2>
+                <p style="max-width: 700px; margin: -30px auto 50px; color: #64748B;">Hemos sintetizado el Decreto 1278 y las guías del MEN para que estudies lo que realmente sale en la prueba.</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <i class="fas fa-gavel"></i>
+                    <h3>Marco Legal y Normativo</h3>
+                    <p>Entiende el Estatuto Docente y Decreto 915. Conoce las reglas del juego y tus derechos en cada etapa.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chalkboard-user"></i>
+                    <h3>Competencias Pedagógicas</h3>
+                    <p>Estrategias de Enseñar y Evaluar. Aprende a responder casos de aula como el docente que busca el MEN.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <h3>Análisis Curricular</h3>
+                    <p>Dominio total de los DBA y Estándares Básicos. La Educación Inclusiva (Dec. 1421) aplicada al examen.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Estrategia de Prueba</h3>
+                    <p>Técnicas de Lectura Crítica para descartar opciones trampa y claves para la prueba Psicotécnica.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ecosystem">
+        <div class="container">
+            <div class="eco-flex">
+                <div class="eco-text">
+                    <h2 class="section-title" style="margin-bottom: 30px; text-align: left;">No es un PDF aburrido,<br>es un Ecosistema.</h2>
+                    
+                    <div class="eco-item">
+                        <div class="eco-icon"><i class="fas fa-headphones-alt"></i></div>
+                        <div>
+                            <h4>Clases en Audio (Podcast)</h4>
+                            <p>Optimiza tu tiempo. Estudia mientras cocinas, haces ejercicio o vas en el bus.</p>
+                        </div>
+                    </div>
+
+                    <div class="eco-item">
+                        <div class="eco-icon"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <h4>Infografías de Alto Impacto</h4>
+                            <p>Resúmenes visuales para fijar conceptos complejos en segundos antes del examen.</p>
+                        </div>
+                    </div>
+
+                    <div class="eco-item">
+                        <div class="eco-icon"><i class="fas fa-mobile-screen"></i></div>
+                        <div>
+                            <h4>Lectura Ágil</h4>
+                            <p>Contenido diseñado para leer en tu celular sin tener que hacer zoom constantemente.</p>
+                        </div>
+                    </div>
+                </div>
+                
+               <div class="eco-image">
+    <img src="promo.png" 
+         alt="Vista del Kit en celular" 
+         style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="oferta" class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 10px;">Deja de buscar información dispersa</h2>
+            <p style="opacity: 0.9; font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px;">Obtén el Kit Ruta 360° completo y comienza hoy mismo.</p>
+            
+            <div class="bonus-card">
+                <div class="bonus-tag">¡SOLO POR HOY!</div>
+                <h4><i class="fas fa-gift" style="color: #F59E0B;"></i> Pack de Aceleración Digital (Gratis)</h4>
+                <ul>
+                    <li>🎁 <strong>Curso:</strong> Inteligencia Artificial Práctica para Docentes.</li>
+                    <li>🚀 <strong>Comunidad VIP:</strong> Grupo exclusivo de WhatsApp.</li>
+                    <li>📅 <strong>Capacitación Continua:</strong> Talleres en vivo Enero, Febrero y Marzo 2026.</li>
+                </ul>
+            </div>
+            <div class="price-container">
+                <div class="discount-badge">¡Ahorras 83%!</div>
+                
+                <span class="old-price">Antes $300.000</span>
+                
+                <span class="new-price">
+                    <span class="currency">$</span>50.000 <span class="cop-label">COP</span>
+                </span>
+            </div>
+
+            <br>
+
+            <a href="https://bit.ly/pagarcurso2026" target="_blank" class="btn btn-primary" style="font-size: 1.4rem; padding: 22px 50px; box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);">
+                DESCARGAR KIT + BONUS IA <i class="fas fa-download" style="margin-left: 10px;"></i>
+            </a>
+            
+            <div class="trust-badges">
+                <span><i class="fas fa-lock" style="color: #4ade80;"></i> Pago 100% Seguro</span>
+                <span><i class="fas fa-bolt" style="color: #fbbf24;"></i> Acceso Inmediato</span>
+                <span><i class="fas fa-infinity" style="color: #60a5fa;"></i> Acceso de por vida</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Ruta 360° Docente. Todos los derechos reservados.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.6;">Este sitio no tiene afiliación directa con la Comisión Nacional del Servicio Civil (CNSC) ni el MEN.</p>
+        </div>
+    </footer>
+
+    <script>
+        // SOLUCIÓN: Declaramos la variable fuera de la función para que persista
+        // así no se crea un audio nuevo cada vez que das clic.
+        let audioPlayer = new Audio('audio_prueba.mp3');
+        
+        // Opcional: Cuando el audio termina solo, resetear el ícono a Play
+        audioPlayer.onended = function() {
+            const icon = document.getElementById('playIcon');
+            const wave = document.querySelector('.audio-wave');
+            icon.classList.remove('fa-pause');
+            icon.classList.add('fa-play');
+            wave.style.opacity = '0.4';
+        };
+
+        function togglePlay() {
+            const icon = document.getElementById('playIcon');
+            const wave = document.querySelector('.audio-wave');
+            
+            if (icon.classList.contains('fa-play')) {
+                // Estado: Reproducir
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
+                wave.style.opacity = '1';
+                audioPlayer.play(); // Usamos la variable global
+            } else {
+                // Estado: Pausar
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play');
+                wave.style.opacity = '0.4';
+                audioPlayer.pause(); // Usamos la variable global
+            }
+        }
+    </script>
+</body>
+</html>
