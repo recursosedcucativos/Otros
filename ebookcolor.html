@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColoringBooks | Libros Gratis, Cursos y Personalización</title>
+    
+    <meta name="description" content="Descarga libros para colorear PDF gratis sobre naturaleza y convivencia escolar. Aprende a crearlos con IA en 5 minutos (Curso $10k) o pide tu pack personalizado.">
+    <meta name="keywords" content="libros colorear pdf, convivencia escolar colorear, reinos de la naturaleza dibujo, curso crear libros ai, dibujos para imprimir colombia">
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' https: data:; script-src 'self' 'unsafe-inline';">
+
+    <meta property="og:title" content="🎨 Libros Educativos para Colorear Gratis">
+    <meta property="og:description" content="Descarga PDFs de Convivencia Escolar y Naturaleza gratis. O aprende mi método de 5 minutos.">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630?text=Libros+Educativos+Gratis">
+    <meta property="og:url" content="https://tudominio.com">
+    <meta property="og:type" content="website">
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #FDFBF7;
+            --text-color: #333333;
+            --accent-color: #FF6B35;
+            --secondary-color: #2D3142;
+            --success-color: #00CC99;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        a { text-decoration: none; }
+
+        /* HERO HEADER */
+        header {
+            background: linear-gradient(rgba(45, 49, 66, 0.85), rgba(45, 49, 66, 0.85)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1909&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-content h1 { font-size: 3rem; margin-bottom: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* BOTONES GLOBALES */
+        .btn {
+            display: inline-block; padding: 12px 30px; border-radius: 50px; font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background-color: var(--accent-color); color: white; font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 107, 53, 0.6); }
+
+        /* SECCIÓN GALERÍA */
+        .gallery-section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 2rem; font-size: 2.5rem; color: var(--secondary-color); }
+
+        .filters { text-align: center; margin-bottom: 3rem; }
+        .filter-btn {
+            background: transparent; border: 2px solid var(--secondary-color); color: var(--secondary-color);
+            padding: 8px 20px; margin: 5px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--secondary-color); color: white; }
+
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
+        .book-card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: var(--card-shadow); transition: transform 0.3s; position: relative;
+        }
+        .book-card:hover { transform: translateY(-5px); }
+        .book-img { width: 100%; height: 300px; object-fit: cover; background-color: #ddd; }
+        .book-info { padding: 1.5rem; }
+        .book-title { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--secondary-color); }
+        .book-cat { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 1rem; display: block; }
+        .btn-download {
+            background-color: var(--secondary-color); color: white; padding: 8px 0; width: 100%;
+            display: block; text-align: center; border-radius: 8px; font-size: 0.9rem;
+        }
+        .btn-download:hover { background-color: #1a1d29; }
+
+        /* SECCIONES DE VENTA */
+        .sales-section { background-color: white; padding: 5rem 2rem; position: relative; overflow: hidden; border-bottom: 1px solid #eee; }
+        .sales-container { max-width: 900px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 3rem; }
+        .sales-text { flex: 1; min-width: 300px; }
+        .sales-visual { flex: 1; min-width: 300px; text-align: center; }
+        .price-tag { font-size: 2.5rem; color: var(--success-color); font-weight: 800; display: block; margin: 1rem 0; }
+        .feature-list { list-style: none; margin: 1.5rem 0; }
+        .feature-list li { margin-bottom: 0.8rem; }
+        .feature-list i { color: var(--success-color); margin-right: 10px; }
+        .mockup-box {
+            background: #eee; height: 250px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-weight: bold; color: #aaa; border: 2px dashed #ccc;
+        }
+
+        .custom-pack-section { background-color: #f4f7f6; padding: 4rem 2rem; text-align: center; }
+        .pack-container { max-width: 800px; margin: 0 auto; }
+        .pack-card {
+            background: white; border: 3px dashed var(--accent-color); border-radius: 20px; padding: 2rem;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+            position: relative; margin-top: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .pack-badge {
+            background: var(--accent-color); color: white; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .pack-details { flex: 2; text-align: left; min-width: 280px; }
+        .pack-list { list-style: none; margin-top: 1rem; }
+        .pack-list li { margin-bottom: 0.5rem; font-size: 1rem; color: #555; }
+        .pack-list i { color: var(--accent-color); margin-right: 8px; }
+        .pack-action { flex: 1; text-align: center; min-width: 250px; padding-top: 1rem; border-left: 1px solid #eee; }
+        .pack-price { display: block; font-size: 2.2rem; font-weight: 800; color: var(--secondary-color); margin-bottom: 0.5rem; }
+        .btn-pack { background-color: var(--success-color); color: white; width: 100%; font-size: 1rem; }
+        .btn-pack:hover { background-color: #00a87e; transform: scale(1.02); }
+        .pack-note { font-size: 0.75rem; color: #999; margin-top: 5px; }
+
+        .mentorship-section { background: var(--secondary-color); color: white; padding: 4rem 2rem; text-align: center; }
+        .mentoria-grid { max-width: 800px; margin: 2rem auto; background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px); }
+        .mentoria-price { font-size: 2rem; color: var(--accent-color); font-weight: bold; }
+
+        footer { background: #1a1d29; color: #888; text-align: center; padding: 2rem; font-size: 0.9rem; }
+        .float-wa {
+            position: fixed; width: 60px; height: 60px; bottom: 30px; right: 30px;
+            background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
+            font-size: 30px; box-shadow: 2px 2px 3px #999; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .float-wa:hover { background-color: #128C7E; }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2rem; }
+            .sales-container { flex-direction: column-reverse; }
+            .pack-action { border-left: none; border-top: 1px solid #eee; margin-top: 1.5rem; }
+            .pack-details { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header role="banner">
+        <div class="hero-content">
+            <h1>Aprende y Colorea</h1>
+            <p>Descarga libros educativos de convivencia y naturaleza. O descubre cómo crearlos tú mismo con mi método.</p>
+            <a href="#galeria" class="btn btn-primary">Descargas Gratis <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <section id="galeria" class="gallery-section">
+            <h2 class="section-title">Biblioteca de Recursos</h2>
+            
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterBooks('all')">Todos</button>
+                <button class="filter-btn" onclick="filterBooks('sociales')">Sociales</button>
+                <button class="filter-btn" onclick="filterBooks('ciencias')">Ciencias</button>
+                </div>
+
+            <div class="books-grid" id="books-container">
+                </div>
+        </section>
+
+        <article class="sales-section">
+            <div class="sales-container">
+                <div class="sales-text">
+                    <span style="color: var(--accent-color); font-weight: bold; letter-spacing: 1px;">CURSO "MÉTODO 5 MINUTOS"</span>
+                    <h2>¿Cómo los hago tan rápido?</h2>
+                    <p>Revelado: La combinación exacta de Inteligencia Artificial + Prompting que uso para crear estos libros sin saber dibujar.</p>
+                    
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Tutorial directo al grano.</li>
+                        <li><i class="fas fa-check-circle"></i> Copia y pega mis instrucciones (Prompts).</li>
+                        <li><i class="fas fa-check-circle"></i> Crea material infinito para tus clases.</li>
+                    </ul>
+
+                    <span class="price-tag">$10.000 COP</span>
+                    
+                    <a href="https://wa.me/573008460327?text=Hola,%20quiero%20comprar%20el%20video-curso%20de%2010k%20para%20crear%20libros" 
+                       class="btn btn-primary" 
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        <i class="fas fa-play"></i> Quiero Aprender el Secreto
+                    </a>
+                </div>
+                
+                <div class="sales-visual">
+                    <div class="mockup-box" style="background-image: url('https://via.placeholder.com/400x300?text=Curso+Video+Cover'); background-size: cover;">
+                        </div>
+                    <p style="margin-top: 10px; font-style: italic;">Video grabado paso a paso</p>
+                </div>
+            </div>
+        </article>
+
+        <section class="custom-pack-section">
+            <div class="pack-container">
+                <div class="pack-badge">¡AHORRA TIEMPO!</div>
+                <h2 style="color: var(--secondary-color); margin-bottom: 1rem;">¿Necesitas un tema específico?</h2>
+                <p class="pack-subtitle">Yo lo diseño por ti. Perfecto para eventos, cierres de proyecto o cumpleaños.</p>
+                
+                <div class="pack-card">
+                    <div class="pack-details">
+                        <h3>🎁 Pack Personalizado "A Tu Medida"</h3>
+                        <ul class="pack-list">
+                            <li><i class="fas fa-book-open"></i> <strong>3 Libros Únicos</strong> del tema que elijas.</li>
+                            <li><i class="fas fa-layer-group"></i> <strong>30 Páginas en total</strong> listas para imprimir.</li>
+                            <li><i class="fas fa-file-pdf"></i> Calidad profesional.</li>
+                            <li><i class="fas fa-bolt"></i> Entrega Rápida.</li>
+                        </ul>
+                    </div>
+                    <div class="pack-action">
+                        <span class="pack-price">$10.000 COP</span>
+                        <a href="https://wa.me/573008460327?text=Hola,%20quiero%20el%20Pack%20Personalizado%20de%203%20libros%20por%2010k" 
+                           class="btn btn-pack"
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-magic"></i> Pedir Mi Pack Ahora
+                        </a>
+                        <p class="pack-note">*Incluye portadas con nombre</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mentorship-section">
+            <div class="mentoria-grid">
+                <h3>¿Quieres emprender con esto?</h3>
+                <p style="margin: 1rem 0;">Mentoría 1 a 1. Te enseño a convertir esta habilidad en un negocio rentable o a mejorar tu perfil docente.</p>
+                
+                <div class="mentoria-price">$50.000 COP / Hora</div>
+                
+                <a href="https://wa.me/573008460327?text=Hola,%20me%20interesa%20la%20mentoría%20VIP%20de%2050k" 
+                   class="btn" 
+                   style="background: white; color: var(--secondary-color); margin-top: 1rem;"
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> Agendar Mentoría
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2024 ColoringBooks. Todos los derechos reservados.</p>
+    </footer>
+
+    <a href="https://wa.me/573008460327" class="float-wa" target="_blank" rel="noopener noreferrer" aria-label="Chat WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // --- TUS LIBROS CARGADOS ---
+        // He usado imágenes genéricas. Recuerda cambiarlas por las portadas reales de tus PDFs.
+        const books = [
+            // --- REINOS DE LA NATURALEZA (CIENCIAS) ---
+            {
+                title: "Reinos de la Naturaleza Vol. 1",
+                category: "ciencias",
+                image: "https://via.placeholder.com/300x400?text=Naturaleza+1", 
+                link: "https://drive.google.com/file/d/10dcLEdZXZAaAnnXuYfi_JNOdgZfDve6Y/view?usp=sharing",
+                alt: "Libro colorear reinos de la naturaleza parte 1"
+            },
+            {
+                title: "Reinos de la Naturaleza Vol. 2",
+                category: "ciencias",
+                image: "https://via.placeholder.com/300x400?text=Naturaleza+2", 
+                link: "https://drive.google.com/file/d/1_QQ0OzrgMxskmX2dwppgxevVJt9G7aVu/view?usp=sharing",
+                alt: "Libro colorear reinos de la naturaleza parte 2"
+            },
+            
+            // --- CONVIVENCIA ESCOLAR (SOCIALES) ---
+            {
+                title: "Convivencia Escolar: El Respeto",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+1",
+                link: "https://drive.google.com/file/d/1DAQ7-fM8Un6sLzWu4u8Wu-xR3474zeMJ/view?usp=sharing",
+                alt: "Dibujos para colorear convivencia escolar respeto"
+            },
+            {
+                title: "Convivencia Escolar: Amistad",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+2",
+                link: "https://drive.google.com/file/d/1Anl_uMXT6UUYH1x6SCaZoI4OMoAMthe2/view?usp=sharing",
+                alt: "Dibujos amistad escuela primaria"
+            },
+            {
+                title: "Convivencia: Buenos Modales",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+3",
+                link: "https://drive.google.com/file/d/1GTaP1skPvwbh7SAeC-8sLheJ_NK9ONaF/view?usp=sharing",
+                alt: "Normas de cortesia para colorear"
+            },
+            {
+                title: "Convivencia: En el Aula",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+4",
+                link: "https://drive.google.com/file/d/1lEA8nNlwOcWdZu_KQEt8Yn4Dnp0on644/view?usp=sharing",
+                alt: "Comportamiento en el aula dibujos"
+            },
+            {
+                title: "Convivencia: Valores",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+5",
+                link: "https://drive.google.com/file/d/1YtS1CHOMsoE0LDDpKg23VrcRkX1lDB-B/view?usp=sharing",
+                alt: "Valores humanos para niños colorear"
+            },
+            {
+                title: "Convivencia: Paz y Armonía",
+                category: "sociales",
+                image: "https://via.placeholder.com/300x400?text=Convivencia+6",
+                link: "https://drive.google.com/file/d/1pGbOYqn_-0RP2qIlJl9v-360SyseA1Pz/view?usp=sharing",
+                alt: "Paz escolar dibujos pdf"
+            }
+        ];
+
+        const container = document.getElementById('books-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function renderBooks(filter) {
+            container.innerHTML = ''; 
+            const filteredBooks = filter === 'all' ? books : books.filter(book => book.category === filter);
+
+            filteredBooks.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.innerHTML = `
+                    <img src="${book.image}" alt="${book.alt}" class="book-img" loading="lazy">
+                    <div class="book-info">
+                        <span class="book-cat">${book.category}</span>
+                        <h3 class="book-title">${book.title}</h3>
+                        <a href="${book.link}" target="_blank" rel="noopener noreferrer" class="btn-download">
+                            <i class="fas fa-download"></i> Descargar PDF Gratis
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterBooks(category) {
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderBooks(category);
+        }
+
+        // Cargar libros al iniciar
+        renderBooks('all');
+    </script>
+</body>
+</html>
